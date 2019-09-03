@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>初识ajax</title>
+    <script>
+        window.onload = function () {
+            var btn = document.getElementById("btn");
+            btn.onclick = function () {
+                //使用ajax发送请求，需要如下几部
+                var username = document.getElementById('username').value;
+                var password = document.getElementById('password').value;
+
+                //1.创建XMLHttpRequest对象
+                //兼容性处理
+                var xhr = null;
+                /* if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else {
+                    xhr = new ActiveXObject("Microsoft");//ie6
+                } */
+                try {
+                    xhr = new XMLHttpRequest();
+                } catch (e) {
+                    xhr = new ActiveXObject("Microsoft"); //ie6
+                }
+                //2.准备发送
+                //open()
+                //第一个参数：请求方式，第二个参数：请求的url，第三个参数：同步或异步标志位，默认为异步(true)
+                //如果是get请求那么参数必须在url中'./check.php?username=' + username + "&password=" + password
+                //且要对中文进行编码 encodeURI()  
+                var param = encodeURI("username=" + username + "&password=" + password);
+                xhr.open('get', './check.php?' + param, true); //true表示异步，默认为true
+                //3.执行发送动作
+                xhr.send(null); //get传送null,必须写
+                //4.指定回调函数
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) //4:表示得到服务端数据
+                    {
+                        if (xhr.status == 200) { //200:正常
+                            var data = xhr.responseText;
+                            var info = document.getElementById("info");
+                            if (data == "1") {
+                                info.innerHTML = "登录成功";
+                            } else {
+                                info.innerHTML = "登录失败";
+                            }
+                        }
+                    }
+                };
+
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form>
+        用户名：<input type="text" name="username" id="username"> <span id="info"></span>
+        <br>
+        密码: <input type="text" name="password" id="password">
+        <br>
+        <input type="button" value="登录" id="btn">
+    </form>
+</body>
+
+</html>
