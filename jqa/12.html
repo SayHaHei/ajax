@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../jquery-1.12.2.min.js"></script>
+    <script>
+        $(function () {
+            $("#btn").click(function () {
+                var code = $("#code").val();
+                $.ajax({
+                    // type: 'get',//默认是get请求
+                    type: 'post',
+                    // url: './11.php?code=' + code,
+                    url: './11.php',
+                    dataType: 'json',//json xml text html script jsonp
+                    data: {
+                        code: code
+                    },
+                    success: function (data) {
+                        if (data.flag == 0) {
+                            $("#info").html("没有这本书");
+                        } else {
+                            var tag = '<ul><li>书名' + data.bookname + '</li><li>' +
+                                data.author + '</li><li>描述' + data.desc + '</li></ul>';
+                            $("#info").html(tag);
+                        }
+                    },
+                    error:function (data) {  
+                        alert(data);
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input type="button" value="显示效果" id="id">
+
+    <div id="container">
+        <div>
+            图书编码:
+            <input type="text" name="code" id="code">
+            <input type="button" value="查询" id="btn">
+
+        </div>
+        <div id="info"></div>
+    </div>
+</body>
+
+</html>
