@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="../jquery-1.12.2.min.js"></script>
+    <script>
+        $(function () {
+            $("#btn").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "get",
+                    url: "http://www.mytom.com/jsonp.php",
+                    // data: "jsonp",
+                    dataType: "jsonp",
+                    jsonp:'cb',//修改回调函数的key,即将callback=改成cb=
+                    jsonpCallback:'abc',//修改回调函数的名字
+                    success: function (response) { //后端指定回调函数名后，就是使用success
+                        console.log(response);
+                    },
+                    error: function (data) { //默认jsonp返回的是error方法
+                        console.log(data);
+                        console.log('error');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <input type="button" value="点击" id="btn">
+</body>
+
+</html>
