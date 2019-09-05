@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../template-web.js"></script>
+    <script>
+        window.onload = function () {
+            function success(data) {
+                //做数据的解析
+                var title = data.title;
+                var books = data.books;
+                var tag = '<h1>' + title + "</h1>";
+                for (var i = 0; i < books.length; i++) {
+                    tag += '<div>' + books[i] + '</div>';
+                }
+                var con = document.getElementById("container");
+                con.innerHTML = tag;
+            }
+            var data = {
+                title: '图书信息',
+                books: ['三国演义', '水浒传', '西游记', '红楼梦']
+            }
+            success(data);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+
+</html>

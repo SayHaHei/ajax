@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../template-web.js"></script>
+    <script type="text/html" id="template">
+        <!-- //传过来的是，data里的数据，并没有data变量本身 data变量是访问不到的 -->
+        <h1>{{title}}</h1>
+        {{if books}}
+            {{each books as value i}}
+            <div>{{value}}</div>
+            {{/each}}
+        {{/if}}
+        <div>{{}}</div>
+    </script>
+    <script>
+        window.onload = function () {
+            var data = {
+                title: '图书信息',
+                books: ['三国演义', '水浒传', '西游记', '红楼梦']
+            };
+            //模板的作用把 模板和数据拼接到一起生成一个静态HTML片段，实际就是该方法的返回值
+            //参数1：模板id  参数2:数据
+            var html = template('template', data);
+            var con = document.getElementById("container");
+            con.innerHTML = html;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+
+</html>
