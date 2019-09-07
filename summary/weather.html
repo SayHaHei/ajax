@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #container {
+            width: 500px;
+            min-height: 300px;
+            background-color: lightgreen;
+            margin: auto;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+
+    <script src="../jquery-1.12.2.min.js"></script>
+    <script>
+        $(function () {
+            $('#query').click(function () {
+                var city = $('#city').val();
+                console.log(city);
+                $.ajax({
+                    type: "get",
+                    url: "http://localhost/summary/citycode.php",
+                    data: {
+                        cityName: city
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        //如果第二次ajax请求依赖于第一次ajax请求，那么要把第二次嵌套在第一次里面
+                        //否则异步请求，无法得到data.cityCode的值
+                        $.ajax({
+                            type: "get",
+                            url: "http://localhost/summary/cityweather.php",
+                            data: {
+                                cityCode: data.cityCode
+                            },
+                            dataType: "json",
+                            success: function (resp) {
+                                resp = resp.retData;
+                                var tag = '<ul>风向<li>'+resp.WD+'</li>风级<li>'+resp.WS+'</li>海拔<li>'+
+                                    '</li>日期<li></li>最高温度<li></li>最低温度<li></li>平均温图<li></li>日出时间<li></li>日落时间<li></li>纬度<li></li>经度<li></li></ul>'
+                                // $('#info').html(tag);
+                                $('#info').append(tag);
+                            }
+                        });
+
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        城市名称:<input type="text" id="city">
+        <input type="button" value="查询" id="query">
+        <div id="info"></div>
+    </div>
+</body>
+
+</html>
